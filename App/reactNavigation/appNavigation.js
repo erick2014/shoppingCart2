@@ -1,6 +1,6 @@
 import { TabNavigator } from 'react-navigation'
 
-import ProductsList from '../components/ProductsList'
+import ProductsList from '../components/Products/ProductsList'
 import ShoppingCart from '../components/ShoppingCart'
 
 const AppNavigation = TabNavigator({
