@@ -1,33 +1,22 @@
-import React, { Component } from 'react';
+//react stuff
+import React, { Component } from 'react'
+//redux stuff 
+import { connect } from 'react-redux'
+import { productsActions } from '../../redux/actions/products';
+//react native stuff
 import { Text, View, StyleSheet, FlatList, Image } from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons'
+//components
 import CustomCirle from './CustomCircle/CustomCircle'
 
 class ProductsList extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			products: [
-				{
-					key: '1', url: 'http://onapples.com/uploads/varieties/4iw8z5071wzp.png',
-					text: 'Apple',
-					description: 'Apples are good for your body, also are delicious'
-				},
-				{
-					key: '2',
-					url: 'https://vignette.wikia.nocookie.net/battlefordreamisland/images/a/ae/Bananas.png/revision/latest?cb=20170825134007',
-					text: 'Bananas',
-					description: 'Bananas are for monkeys...'
-				},
-				{
-					key: '3',
-					url: 'http://www.thienkhanh.vn/wp-content/uploads/2017/07/dua.png',
-					text: 'Pinnaple',
-					description: 'Pinnable is yellow, is pretty, and delicious'
-				},
-			]
-		}
+	}
+
+	componentDidMount() {
+		this.props.fetchProducts()
 	}
 
 	onClickEyeIcon = clickedProduct => {
@@ -61,6 +50,8 @@ class ProductsList extends Component {
 	}
 
 	render() {
+		const { products: { productsList } } = this.props
+
 		return (
 			<View style={styles.container}>
 				<Text style={styles.mainTitle}>
@@ -68,7 +59,7 @@ class ProductsList extends Component {
 				</Text>
 				<View style={styles.imagesList}>
 					<FlatList
-						data={this.state.products}
+						data={productsList}
 						renderItem={this.getItemList}
 					/>
 				</View>
@@ -117,4 +108,15 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default ProductsList
+const mapStateToProps = state => ({
+	products: state.products,
+});
+
+export default connect(
+	//map props
+	state => ({ products: state.products }),
+	{
+		fetchProducts: productsActions.fetchProducts
+	}
+
+)(ProductsList);
