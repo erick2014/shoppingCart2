@@ -1,19 +1,10 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View
+	StyleSheet,
+	Text,
+	View
 } from 'react-native';
 
-import AppNavigation from './reactNavigation/appNavigation'
+import RootApp from './reactNavigation/appWithStore'
 
-//export App component binding it with the store and the app navigator
-class App extends Component {
-  render() {
-    return (
-      <AppNavigation />
-    )
-  }
-}
-
-export default App;
+export default RootApp;
