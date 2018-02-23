@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import thunkMiddleware from 'redux-thunk'
+
 import {
   addNavigationHelpers,
 } from 'react-navigation'
@@ -25,7 +27,7 @@ import appReducer from '../redux/reducers'
 // properly trigger the event listeners
 const middleware = createReactNavigationReduxMiddleware(
   "root",
-  state => state.nav,
+  state => state.nav
 )
 /*
   Subscribe to updates to navigation lifecycle
@@ -44,7 +46,7 @@ class App extends Component {
         addNavigationHelpers({
           dispatch: this.props.dispatch,
           state: this.props.nav,
-          addListener,
+          addListener
         })
       } />
     );
@@ -57,7 +59,7 @@ const AppWithNavigationState = connect(
 
 const store = createStore(
   appReducer,
-  applyMiddleware(middleware),
+  applyMiddleware(middleware, thunkMiddleware),
 )
 
 class RootApp extends Component {

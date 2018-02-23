@@ -49,22 +49,28 @@ class ProductsList extends Component {
 		)
 	}
 
-	render() {
-		const { products: { productsList } } = this.props
+	buildContent = () => {
+		const { products: { productsList, isFetching } } = this.props
 
 		return (
 			<View style={styles.container}>
 				<Text style={styles.mainTitle}>
 					Fruits List
-				</Text>
+					</Text>
 				<View style={styles.imagesList}>
 					<FlatList
+						keyExtractor={item => item.id}
 						data={productsList}
 						renderItem={this.getItemList}
+						keyExtractorField="id"
 					/>
 				</View>
 			</View>
 		)
+	}
+
+	render() {
+		return this.buildContent()
 	}
 }
 
