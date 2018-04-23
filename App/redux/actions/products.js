@@ -43,9 +43,7 @@ const fetchProducts = () => (dispatch, getState) => {
 		//get all records in the local db
 		let currentProducts = getCurrentProductsInDb()
 		//check if we find any records
-		if (currentProducts.length === 0) {
-			currentProducts = insertProductsInDb()
-		}
+		if (!currentProducts.length) currentProducts = insertProductsInDb()
 
 		resolve(currentProducts)
 
