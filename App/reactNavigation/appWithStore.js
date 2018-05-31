@@ -65,9 +65,7 @@ const store = createStore(
 class RootApp extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <AppWithNavigationState />
-      </Provider>
+      <AppNavigator />
     );
   }
 }
