@@ -1,3 +1,4 @@
+import React, { Component } from 'react'
 import { TabNavigator, StackNavigator } from 'react-navigation'
 
 //Products components
@@ -30,11 +31,5 @@ const AppNavigation = StackNavigator({
     initialRouteName: 'Login'
   })
 
-// const AppNavigation = TabNavigator(
-// 	{
-// 		Products: { screen: productsStack },
-// 		Cart: { screen: ShoppingCart }
-// 	}
-// )
 
 export default AppNavigation

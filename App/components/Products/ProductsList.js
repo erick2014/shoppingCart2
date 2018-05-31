@@ -1,5 +1,6 @@
 //react stuff
 import React, { Component } from 'react'
+import { AppConsumer } from '../../context/appContext'
 //redux stuff 
 import { connect } from 'react-redux'
 import { productsActions } from '../../redux/actions/products';
@@ -8,64 +9,22 @@ import { Text, View, StyleSheet, FlatList, Image, Button } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 //components
 import CustomCirle from './CustomCircle/CustomCircle'
+// realm stuff
+import { getAllRecords } from '../../realmDb/realmDb'
 
-import RealmDb from '../../realmDb/realmDb'
-
-import { Container } from "constate";
-
-const initialState = { count: 0, products: [] };
-
-const actions = {
-  increment: (something) => state => {
-    console.log('current state?', state)
-    return { count: state.count + 1 }
-  },
-  decrement: () => state => {
-    return { count: state.count - 1 }
-  }
-};
-
-const onMount = ({ setState }) => {
-  const products = RealmDb.getAllRecords('Products')
-  if (Object.keys(products).length) {
-    setState({ products: Object.values(products) })
-  }
-};
-
-
-const MyList = props => {
-  const { getItemList } = props
-  return (
-    <Container initialState={initialState} actions={actions} onMount={onMount}>
-      {
-        ({ count, increment, products }) => {
-          let productsList = []
-          return (
-            <View>
-              <Text style={styles.mainTitle}> {products.length} Fruits List Available </Text>
-              <FlatList
-                keyExtractor={item => item.id}
-                data={products}
-                renderItem={getItemList}
-                keyExtractorField="id"
-              />
-            </View>
-          )
-        }
-      }
-    </Container>
-  )
-
-}
 
 class ProductsList extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      products: []
+    }
   }
 
   componentDidMount() {
-    //this.props.fetchProducts()
+    let products = getAllRecords('Products')
+    this.setState({ products: Object.values(products) })
   }
 
   onClickEyeIcon = clickedProduct => {
@@ -92,20 +51,35 @@ class ProductsList extends Component {
           <View style={styles.iconWrapper}>
             <CustomCirle iconName={'shopping'} onClickHandler={() => { }} />
           </View>
-
         </View>
-      </View >
+      </View>
     )
   }
 
   buildContent = () => {
+    const { products } = this.state
     return (
-      <View style={styles.container}>
-        <Button onPress={() => { this.props.navigation.navigate('Login') }} title='Go to login' />
-        <View style={styles.imagesList}>
-          <MyList getItemList={this.getItemList} />
-        </View>
-      </View>
+      <AppConsumer>
+        {(context) => {
+          const { sessionInfo } = context
+          return (
+            <View style={styles.container}>
+              <View>
+                <Text>Hello {sessionInfo.userName}</Text>
+              </View>
+              <Button onPress={() => { this.props.navigation.navigate('Login') }} title='Go to login' />
+              <View style={styles.imagesList}>
+                <FlatList
+                  keyExtractor={item => item.id}
+                  data={products}
+                  renderItem={this.getItemList}
+                  keyExtractorField="id"
+                />
+              </View>
+            </View>
+          )
+        }}
+      </AppConsumer>
     )
   }
 
